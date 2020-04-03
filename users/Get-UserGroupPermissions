@@ -1,0 +1,23 @@
+<#
+.SYNOPSIS
+    Get-UserGroupPermissions allows for the creation of an exportable .CSV 
+    file of Usernames and their assigned group permissions.
+.DESCRIPTION
+    
+.PAREMETER
+
+.EXAMPLE
+    Get-UserGroupPermissions
+#>
+
+
+#Adjust null values as needed
+
+$users = Get-ADuser -Filter * -SearchBase "$null" | sort name
+$csvpath = $null
+
+foreach($user in $users)
+{
+   echo $user.Name | Out-File -Append $csvpath
+   Get-ADPrincipalGroupMembership $user | Select Name | Out-File -Append $csvpath
+}
